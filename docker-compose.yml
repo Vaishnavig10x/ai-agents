@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ai-agents-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - frontend
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ai-agents-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
+
+  # Uncomment and configure the following services if needed
+  # database:
+  #   image: postgres:latest
+  #   container_name: ai-agents-database
+  #   environment:
+  #     POSTGRES_USER: yourusername
+  #     POSTGRES_PASSWORD: yourpassword
+  #     POSTGRES_DB: yourdatabase
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+  # message_queue:
+  #   image: bitnami/rabbitmq:latest
+  #   container_name: ai-agents-message-queue
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   environment:
+  #     RABBITMQ_USERNAME: user
+  #     RABBITMQ_PASSWORD: password
+
+volumes:
+  postgres_data:
